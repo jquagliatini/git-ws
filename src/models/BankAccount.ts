@@ -22,4 +22,14 @@ export default class BankAccount {
   getBalance(): number {
     return this.balance;
   }
+
+  add(amount: number): BankAccount {
+    // TODO
+    return this;
+  }
+
+  sub(amount: number): BankAccount {
+    // TODO
+    return this;
+  }
 }

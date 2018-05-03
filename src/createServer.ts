@@ -4,6 +4,7 @@ import { Middleware } from './types';
 import routes from './routes';
 
 const createServer: Middleware = (server: Server): Server => {
+  server.use(plugins.bodyParser());
   server.use(plugins.queryParser());
   return routes.reduce((server, route) => route(server), server);
 };

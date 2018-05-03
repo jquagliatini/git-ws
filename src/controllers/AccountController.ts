@@ -9,6 +9,18 @@ function initController() {
       res.json({ balance: bankAccount.getBalanceObject() });
       return next();
     },
+    add(req: Request, res: Response, next: Next): void {
+      res.json({
+        balance: bankAccount.add(req.body.amount).getBalanceObject(),
+      });
+      return next();
+    },
+    sub(req: Request, res: Response, next: Next): void {
+      res.json({
+        balance: bankAccount.sub(req.body.amount).getBalanceObject(),
+      });
+      return next();
+    },
   };
 }
 // tslint:disable-next-line variable-name

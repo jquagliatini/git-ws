@@ -14,4 +14,14 @@ describe('BankAccount', () => {
       currency: 'EUR',
     });
   });
+
+  it('should add an amount to the balance', () => {
+    ba.add(100);
+    expect(ba.getBalance()).toBe(200);
+  });
+
+  it('should remove an amount to the balance', () => {
+    ba.sub(100);
+    expect(ba.getBalance()).toBe(100);
+  });
 });
