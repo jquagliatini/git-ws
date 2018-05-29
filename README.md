@@ -18,6 +18,47 @@ inside the directory and move the git history to the point named init.
     $ git checkout init
     $ git checkout -b develop
 
+## Part 2/
+
+Now that you started implementing everything inside you BankAccount model,
+let's remove the operation logic and the Currency into dedicated model classes.
+
+You'll see new classes and interfaces (Typescript interfaces are typed JSON).
+
+* `models/Amount.ts`
+* `models/currency/Currency.ts`
+* `models/currency/impl/EurCurrency.ts`
+* `models/currency/impl/UsDollarCurrency.ts`
+* `models/currency/errors/CurrencyError.ts`
+
+Basically, `BankAccount` has an Amount that is defined by a Currency.
+Currency is a basic JSON defining a structure to change the behaviour
+of an Amount. Amount is an immutable object, meaning that each operation
+leads to the creation of a brand new object.
+
+In this quick part, just implement `add` and `sub` in `Amount`.
+An interesting organization would be to share the workload.
+If you are in two, one could implement `add`, while the other `sub`.
+After each implementation try to refactor.
+
+To share your work, try to open a Pull Request on the other developer
+fork. After that pair program to refactor.
+
+When done, each test should pass, and you can
+
+    $ git merge part-3
+
+You can do that once each project of each developer
+is in the same state and that you synchronized with the
+remote. If you opened a pull request, try to use the
+remote as a remote named `upstream`. To do so
+
+    $ git remote add upstream UPSTREAM_URL.git
+
+then, you can update your state by
+
+    $ git pull upstream
+
 ## Part 1/
 
 This part is here for you to familiarize with the code base (typescript).

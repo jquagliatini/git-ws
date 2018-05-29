@@ -1,26 +1,25 @@
-export default class BankAccount {
-  private currency: string = 'EUR';
-  private balance: number = 0;
-  private centsPerUnit: number = 100;
+import { EurCurrency, Currency } from './currency';
+import Amount from './Amount';
 
-  constructor(balance: number = 0, centsPerUnit: number = 100) {
-    this.balance = balance;
-    this.centsPerUnit = centsPerUnit;
+export default class BankAccount {
+  private balance: Amount;
+  constructor(balance: number = 0, currency: Currency = EurCurrency) {
+    this.balance = new Amount(balance * currency.cents_per_unit, currency);
   }
 
   getFormattedBalance(): string {
-    return this.balance.toFixed(2) + this.currency;
+    return this.balance.toString();
   }
 
   getBalanceObject(): { amount: number; currency: string } {
     return {
-      amount: this.balance * this.centsPerUnit,
-      currency: this.currency,
+      amount: this.balance.amount,
+      currency: this.balance.currency.symbol,
     };
   }
 
   getBalance(): number {
-    return this.balance;
+    return this.balance.amount / this.balance.currency.cents_per_unit;
   }
 
   add(amount: number): BankAccount {
