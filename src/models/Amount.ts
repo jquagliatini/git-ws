@@ -13,6 +13,14 @@ export default class Amount {
     }
   }
 
+  get json() {
+    return {
+      _: this.amount,
+      c: this.currency.symbol,
+      s: this.toString(),
+    };
+  }
+
   add(amount: number | Amount): Amount {
     return this;
   }

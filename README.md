@@ -18,6 +18,97 @@ inside the directory and move the git history to the point named init.
     $ git checkout init
     $ git checkout -b develop
 
+## Part 3/
+
+You may argue that a bank account that works with a dynamic balance is
+not realistic. As a really smart person, you are well aware that most
+bank accounts works in a transaction manner. This is a really different system.
+Basically, a transaction, is just an operation, at a given time.
+In order to simplify, we will say that the only operation possible on our
+account is `add`, and that a `sub` operation would be an `add` with
+a negative amount.
+
+Your bank account requires a Ledger that list all the transactions.
+When you ask for your balance, you are asking the ledger to go over
+each transaction, and sum each amount in every transaction.
+
+We can image this with:
+
+```json
+{
+  "ledger": [
+    { "amount": 100, "currency": "EUR", "date": "2018-08-11T08:12:34" },
+    { "amount": 1234567, "currency": "EUR", "date": "2018-04-02T12:38:54" },
+    { "amount": -947000, "currency": "EUR", "date": "2018-04-01T16:02:21" }
+  ]
+}
+```
+
+In this case the balance would be 287667 cents of euros, 2876.67€.
+We obtained that value by reducing the set of transactions in the ledger,
+
+    100
+    + 1234567
+    + (- 947000)
+    = 287667
+
+Getting the balance is as simple as doing
+
+```js
+const balance = transactions.ledger.reduce((sum, t) => ({
+  amount: sum.amount + t.amount,
+  currency: t.currency,
+}));
+```
+
+> **WARNING**: Be aware, that a single account contains thousands if not more
+> transactions, and the upper implementation may not be the best solution.
+
+Your goal, in this part is to implement the `src/models/Ledger.ts` `sum()`
+method. `sum()` is used as the default function for the `getBalance()` operation
+in `src/models/BankAccount.ts`. As you notice in this class, the user
+doesn't know which implementation you took, so she/he called multiple times
+the `sum()` operation. Think about it in your implementation (of course you
+won't see much difference in this example, but still optimize your code).
+
+Every developer will implement with its own optimization. In the end, try
+to share you work with a _Pull request_. You will discuss in the
+newly created thread, on how to optimize the function and treat edge cases.
+This step is here to create conflicts in merge operations, and
+to understant that github, is mainly used for such cases, to discuss on which
+implementation should be finally added to the product.
+
+Once everything is merged, just launch the REST API
+
+    $ npm start
+    ...
+    server listens on 3000
+
+After that just try the following commands you should have _exactly_ the same
+output (appart from the `d` field).
+
+    $ curl http://localhost:3000/h
+    []
+
+    $ curl -XPUT \
+      -H'Content-Type: application/json' \
+      --date '{ "amount": 100 }' \
+      http://localhost:3000/add
+    {"balance":{"amount":100,"currency":"EUR"}}
+
+    $ curl http://localhost:3000/h
+    [{"id":0,"_href":"/t/0","a":{"_":100","c":"EUR","s":"1.00EUR"},"d":1527753723043}]
+
+    $curl http://localhost:3000/t/0
+    {"id":0,"a":{"_":100","c":"EUR","s":"1.00EUR"},"d":1527753723043}
+
+If you have that expected output, **CONGRATULATIONS** you just
+finished that tutorial!
+
+![](https://media.giphy.com/media/ely3apij36BJhoZ234/giphy.gif)
+
+> That's all folks!
+
 ## Part 2/
 
 Now that you started implementing everything inside you BankAccount model,
@@ -274,5 +365,52 @@ Add or substract an amount in the bankaccount.
     "amount": 10000,
     "currency": "EUR"
   }
+}
+```
+
+### GET `/h`
+
+Return the account transaction history.
+You can use the query param `page` (1 indexed) to
+display transactions, 10 by 10.
+
+    $ curl http://localhost:3000/h
+
+    $ curl http://localhost:3000/h?page=2
+
+### 200 `application/json`
+
+```json
+[
+  {
+    "id": 0,
+    "_href": "/t/0",
+    "a": {
+      "_": 100,
+      "c": "EUR",
+      "s": "1.00EUR"
+    },
+    "d": 1527686892178
+  }
+]
+```
+
+### GET `/t/:txId`
+
+Returns a specific transaction.
+
+    $ curl http://localhost:3000/t/0
+
+### 200 `application/json`
+
+```json
+{
+  "id": 0,
+  "a": {
+    "_": 100,
+    "c": "EUR",
+    "s": "1.00EUR"
+  },
+  "d": 1527686892178
 }
 ```
