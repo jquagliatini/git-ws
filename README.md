@@ -41,23 +41,41 @@ An interesting organization would be to share the workload.
 If you are in two, one could implement `add`, while the other `sub`.
 After each implementation try to refactor.
 
-To share your work, try to open a Pull Request on the other developer
+To share your work you must update the remote repository,
+to do so just type
+
+    $ git push origin develop
+
+To share your work, try to open a _Pull Refactor_ on the other developer
 fork. After that pair program to refactor.
+If you are a bit lost on that "Pull Request" take a look at the [official
+guide from github](https://guides.github.com/activities/hello-world/#pr).
+The [forking guide is also of great value!](https://guides.github.com/activities/hello-world/#pr).
+(do not hesitate to look at other ones).
 
-When done, each test should pass, and you can
+Bascially what you will do is open a request to the other developer to pull
+your code from your repository. When you fork you just
+create a copy of the initial repository, but github keeps a special link
+between the two. When you open that pull request, github will automatically
+propose to merge your work inside the initial repository, often refered to
+as **upstream**. Though, since you initially forked my repo, you will need
+to change the base fork to the other developer fork. Doing so you will be
+able to merge your changes.
 
-    $ git merge part-3
-
-You can do that once each project of each developer
-is in the same state and that you synchronized with the
-remote. If you opened a pull request, try to use the
-remote as a remote named `upstream`. To do so
+When done, each test should pass.
+A condition to continue is that each developer
+is in the same state. If you opened a pull request,
+try to use the the developer repo as a remote named `upstream`. To do so
 
     $ git remote add upstream UPSTREAM_URL.git
 
 then, you can update your state by
 
     $ git pull upstream
+
+When everyone is in the same state, just continue with
+
+    $ git merge part-3
 
 ## Part 1/
 
